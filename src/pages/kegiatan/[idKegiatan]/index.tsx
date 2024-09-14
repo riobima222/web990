@@ -1,3 +1,4 @@
+import VideoComponent from "@/components/detailLayananOrKegiatan/videoComponent";
 import HTMLContent from "@/components/every/htmlContent";
 import Loading from "@/components/every/loading";
 import Footer from "@/components/footer/footer";
@@ -9,13 +10,13 @@ import { useEffect, useRef, useState } from "react";
 
 const DetailLayanan = () => {
   const kontakRef = useRef<HTMLDivElement>(null);
-  const [layanan, setLayanan] = useState<any>(false);
+  const [kegiatan, setKegiatan] = useState<any>(false);
   const { data: session } = useSession();
   const router = useRouter();
 
   const fetchDetailLayanan = async () => {
     const res = await fetch(
-      `/api/layanan/detaillayanan/${router.query.idLayanan}`,
+      `/api/kegiatan/detailkegiatan/${router.query.idKegiatan}`,
       {
         method: "GET",
         headers: {
@@ -26,16 +27,17 @@ const DetailLayanan = () => {
     );
     if (res.ok) {
       const data = await res.json();
-      console.log("detail layanan : ", data);
-      setLayanan(data.data);
+      console.log("detail kegiatan : ", data);
+      setKegiatan(data.data);
     } else {
-      console.log(res);
+      const data = await res.json();
+      console.log(data);
     }
   };
 
   useEffect(() => {
     fetchDetailLayanan();
-  }, [router.query.idLayanan]);
+  }, [router.query.idKegiatan]);
 
   const scrollToKontak = () => {
     if (kontakRef.current) {
@@ -47,12 +49,12 @@ const DetailLayanan = () => {
       <ClientNavbar scroll={{ scrollToKontak }} />
       <div className="-DETAIL LAYANAN CONTENT- mt-24 min-h-[20em] bg-[#f2f2f2] py-5">
         <div className="-CONTENT- max-w-[50em] mx-auto">
-          {layanan ? (
+          {kegiatan ? (
             <div className="flex flex-col items-start gap-3 bg-white">
               <div className="w-full">
                 <Image
-                  src={layanan.image}
-                  alt={layanan.title}
+                  src={kegiatan.image}
+                  alt={kegiatan.title}
                   width={700}
                   height={700}
                   className="w-full"
@@ -61,22 +63,13 @@ const DetailLayanan = () => {
               <div className="flex flex-col items-start gap-3 px-3">
                 <div className="flex items-center justify-start px-3 gap-2 bg-[rgba(60,250,215,.2)] rounded-xl">
                   <div className="w-3 h-3 rounded-full bg-green-400" />
-                  <h4 className="text-sm">Layanan</h4>
+                  <h4 className="text-sm">Kegiatan</h4>
                 </div>
-
                 <div>
-                  <h2 className="text-3xl font-bold">{layanan.title}</h2>
-                  <h4 className="text-gray-500 text-sm italic font-bold">
-                    {layanan.tagihan}
-                  </h4>
+                  <h2 className="text-3xl font-bold">{kegiatan.title}</h2>
                 </div>
-                <HTMLContent content={layanan.value} />
-                <div>
-                  Silahkan hubungi :{" "}
-                  <span className="text-blue-500 hover:underline hover:cursor-pointer">
-                    {layanan.kontak}
-                  </span>
-                </div>
+                <VideoComponent url={kegiatan.linkvideo} />
+                <HTMLContent content={kegiatan.keterangan} />
               </div>
               <div
                 className={`${
@@ -87,7 +80,7 @@ const DetailLayanan = () => {
                   type="button"
                   className="px-5 py-2 bg-red-400 hover:bg-red-600 text-white rounded-md"
                 >
-                  Hapus layanan
+                  Hapus kegiatan
                 </button>
               </div>
             </div>

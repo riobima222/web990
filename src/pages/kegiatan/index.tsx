@@ -1,6 +1,5 @@
 import Loading from "@/components/every/loading";
 import Footer from "@/components/footer/footer";
-import TambahLayanan from "@/components/layout/tambahLayanan";
 import ClientNavbar from "@/components/navbar/clientNavbar";
 import { ModalAppearContext } from "@/context/modalAppear";
 import Image from "next/image";
@@ -11,6 +10,7 @@ import { FetchTriggerContext } from "@/context/fetchTrigger";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { AlertSuccessContext } from "@/context/alertSuccess";
+import TambahKegiatan from "@/components/layout/tambahKegiatan";
 // import { AlertFailedContext } from "@/context/alertFailed";
 // import { AlertMessageContext } from "@/context/alertMessage";
 // import AlertSuccess from "@/components/every/alertSuccess";
@@ -28,7 +28,7 @@ const LayananPage = () => {
 
   useEffect(() => {
     const fetchLayanan = async () => {
-      const res = await fetch("/api/layanan/getall", {
+      const res = await fetch("/api/kegiatan/getall", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -56,14 +56,14 @@ const LayananPage = () => {
       <ClientNavbar scroll={{ scrollToKontak }} />
       <div className="-HERO- px-0 sm:px-5 mt-5 pt-20">
         <div className="-IMAGE- flex pe-7 pb-7 justify-end items-end h-[13em] md:h-[17em] bg-[url('/images/banner.jpg')]">
-          <h1 className="text-3xl text-white font-bold">Layanan</h1>
+          <h1 className="text-3xl text-white font-bold">Kegiatan</h1>
         </div>
       </div>
 
       <div className="-LAYANAN- px-5">
         <div className="bg-[#f2f2f2] min-h-[20em] mt-8 p-4">
           <h1 className="font-bold text-2xl text-center mb-5 text-yellow-500">
-            Semua Layanan
+            Semua Kegiatan
           </h1>
           <div className="max-w-[65em] mx-auto flex">
             <div
@@ -75,7 +75,7 @@ const LayananPage = () => {
               <div>
                 <IoIosAdd className="text-2xl" />
               </div>
-              <span>Tambahkan layanan</span>
+              <span>Tambahkan Kegiatan</span>
             </div>
           </div>
           <div className="-CONTENT- max-w-[65em] mb-16 mx-auto py-3 flex flex-wrap gap-5 justify-center items-center">
@@ -94,20 +94,20 @@ const LayananPage = () => {
                   />
                   <div className="flex items-center justify-start px-3 gap-2 bg-[rgba(60,250,215,.2)] rounded-xl">
                     <div className="w-3 h-3 rounded-full bg-green-400" />
-                    <h4 className="text-sm">Layanan</h4>
+                    <h4 className="text-sm">Kegiatan</h4>
                   </div>
-                  <div>
+                  <div className="w-full">
                     <h2 className="font-bold underline hover:no-underline hover:cursor-pointer hover:text-blue-400">
                       <Link href={`/layanan/${item.id}`}>{item.title}</Link>
                     </h2>
                     <p className="text-sm text-gray-400">{item.ketSingkat}</p>
-                    <div className="flex items-center justify-start mt-3">
-                      <button
-                        type="button"
-                        className="px-5 py-2 bg-green-400 text-white rounded-md"
+                    <div className="flex items-center w-full justify-start mt-3">
+                      <Link
+                        href={`/kegiatan/${item.id}`}
+                        className="px-5 py-2 w-full bg-green-400 text-white rounded-md text-center"
                       >
-                        <Link href={`/layanan/${item.id}`}>Detail</Link>
-                      </button>
+                        Detail
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -117,7 +117,7 @@ const LayananPage = () => {
                 <div>
                   <FaFileExcel className="text-xl" />
                 </div>
-                <span>Layanan masih kosong</span>
+                <span>Kegiatan masih kosong</span>
               </div>
             ) : (
               layanan == false && (
@@ -139,7 +139,7 @@ const LayananPage = () => {
           message={alertMessage}
         /> */}
       </div>
-      {showModal && <TambahLayanan />}
+      {showModal && <TambahKegiatan />}
       <Footer kontakRef={kontakRef} />
     </div>
   );
