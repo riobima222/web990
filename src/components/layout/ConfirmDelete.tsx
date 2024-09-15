@@ -40,6 +40,30 @@ const ConfirmDelete = ({ from, id }: { from: string; id: string }) => {
           console.log("ada yang error kawaw: ", err);
         }
       }
+    } else if (from === "kegiatan") {
+      const res = await fetch(`/api/kegiatan/delete/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.token}` || "",
+        },
+        cache: "no-store",
+      });
+      if (res.ok) {
+        console.log("berhasil menghapus kegiatan");
+        const filePath = `images/kegiatan/${id}/kegiatan-image.jpg`;
+        const storageRef = ref(storage, filePath);
+        try {
+          await deleteObject(storageRef);
+          setIsLoading(false);
+          setTimeout(() => {
+            push("/kegiatan");
+            setShowModal(false);
+          }, 1000);
+        } catch (err) {
+          console.log("ada yang error kawaw: ", err);
+        }
+      }
     }
   };
   return (

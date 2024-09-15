@@ -42,6 +42,7 @@ const TambahKegiatan = () => {
   const [value, setValue] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState<File | null>(null);
+  const [imageMessage, setImageMessage] = useState<string>("");
   const storage = getStorage(app);
   const { data: session } = useSession() as { data: CustomeSession | null };
   console.log(session);
@@ -49,6 +50,16 @@ const TambahKegiatan = () => {
   const handleAddLayanan = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+    if (image === null) {
+      setImageMessage("gambar harus diisi");
+      setTimeout(() => {
+        setLoading(false);
+        setTimeout(() => {
+          setImageMessage("");
+        }, 1000);
+      }, 1000);
+      return;
+    }
     const form = e.target as HTMLFormElement;
     const title = (form.elements.namedItem("title") as HTMLInputElement).value;
     const ketSingkat = (
@@ -142,7 +153,19 @@ const TambahKegiatan = () => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setImage(e.target.files[0]);
+      const name = e.target.files[0].name.split(".")[1];
+      if (name !== "jpg") {
+        setImage(null);
+        setImageMessage("harus format: .jpg");
+        setTimeout(() => {
+          setLoading(false);
+          setTimeout(() => {
+            setImageMessage("");
+          }, 1000);
+        }, 1000);
+      } else {
+        setImage(e.target.files[0]);
+      }
     }
   };
 
@@ -158,24 +181,27 @@ const TambahKegiatan = () => {
             placeholder="Title"
             className="text-sm focus:outline-none border-[2px] border-[#990000] px-3 py-2 rounded-md"
             name="title"
+            required
           />
           <input
             type="text"
             placeholder="keterangan singkat kegiatan"
             className="text-sm focus:outline-none border-[2px] border-[#990000] px-3 py-2 rounded-md"
             name="ketsingkat"
+            required
           />
           <input
             type="text"
             placeholder="Masukan link video"
             className="text-sm focus:outline-none border-[2px] border-[#990000] px-3 py-2 rounded-md"
             name="linkvideo"
+            required
           />
           <DynamicReactQuill
             value={value}
             onChange={(content: string) => setValue(content)}
           />
-          <div className="flex justify-center gap-3">
+          <div className="flex justify-center items-center gap-3">
             <label
               htmlFor="image"
               className="text-sm text-gray-700 border-2 text-center p-2 rounded-md w-[9em] hover:cursor-pointer"
@@ -191,6 +217,9 @@ const TambahKegiatan = () => {
                 className="w-[10em]"
               />
             )}
+            {imageMessage !== "" && (
+              <span className="text-red-400 text-sm">{imageMessage}</span>
+            )}
           </div>
           <input
             onChange={handleChange}
@@ -198,15 +227,15 @@ const TambahKegiatan = () => {
             name="image"
             type="file"
             className="hidden"
+            required
           />
           <button
             type="submit"
-            className="text-sm border-2 border-[#990000] text-[#990000] hover:bg-[#642424] hover:text-white py-1 rounded-md"
+            className="text-sm border-2 border-[#990000] text-[#990000] hover:bg-[#990000] hover:text-white py-1 rounded-md"
           >
             {loading ? (
               <div className="flex flex-col items-center justify-center gap-3">
-                <Loading color="text-[#990000]" />
-                <span>wait..</span>
+                <Loading color="text-white" />
               </div>
             ) : (
               "Tambahkan Kegiatan"

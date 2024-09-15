@@ -42,6 +42,7 @@ const TambahLayanan = () => {
   const [value, setValue] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState<File | null>(null);
+  const [imageMessage, setImageMessage] = useState<string>("");
   const storage = getStorage(app);
   const { data: session } = useSession() as { data: CustomeSession | null };
   console.log(session);
@@ -49,6 +50,16 @@ const TambahLayanan = () => {
   const handleAddLayanan = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+    if (image === null) {
+      setImageMessage("gambar harus diisi");
+      setTimeout(() => {
+        setLoading(false);
+        setTimeout(() => {
+          setImageMessage("");
+        }, 1000);
+      }, 1000);
+      return;
+    }
     const form = e.target as HTMLFormElement;
     const title = (form.elements.namedItem("title") as HTMLInputElement).value;
     const tagihan = (form.elements.namedItem("tagihan") as HTMLInputElement)
@@ -145,7 +156,19 @@ const TambahLayanan = () => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setImage(e.target.files[0]);
+      const name = e.target.files[0].name.split(".")[1];
+      if (name !== "jpg") {
+        setImage(null);
+        setImageMessage("harus format: .jpg");
+        setTimeout(() => {
+          setLoading(false);
+          setTimeout(() => {
+            setImageMessage("");
+          }, 1000);
+        }, 1000);
+      } else {
+        setImage(e.target.files[0]);
+      }
     }
   };
 
@@ -161,35 +184,40 @@ const TambahLayanan = () => {
             placeholder="Title"
             className="text-sm focus:outline-none border-[2px] border-[#990000] px-3 py-2 rounded-md"
             name="title"
+            required
           />
           <input
             type="text"
             placeholder="tagihan"
             className="text-sm focus:outline-none border-[2px] border-[#990000] px-3 py-2 rounded-md"
             name="tagihan"
+            required
           />
           <input
             type="text"
             placeholder="kontak"
             className="text-sm focus:outline-none border-[2px] border-[#990000] px-3 py-2 rounded-md"
             name="kontak"
+            required
           />
           <input
             type="text"
             placeholder="keterangan singkat layanan"
             className="text-sm focus:outline-none border-[2px] border-[#990000] px-3 py-2 rounded-md"
             name="ketsingkat"
+            required
           />
           <DynamicReactQuill
             value={value}
             onChange={(content: string) => setValue(content)}
           />
-          <div className="flex justify-center gap-3">
+          <div className="flex justify-center items-center gap-3">
             <label
               htmlFor="image"
               className="text-sm text-gray-700 border-2 text-center p-2 rounded-md w-[9em] hover:cursor-pointer"
             >
-              masukan gambar disini, maximal <strong>1mb</strong>
+              masukan gambar disini, maximal <strong>1mb</strong> format{" "}
+              <strong>.jpg</strong>
             </label>
             {image && (
               <Image
@@ -199,6 +227,9 @@ const TambahLayanan = () => {
                 height={100}
                 className="w-[10em]"
               />
+            )}
+            {imageMessage !== "" && (
+              <span className="text-red-400 text-sm">{imageMessage}</span>
             )}
           </div>
           <input
@@ -210,11 +241,11 @@ const TambahLayanan = () => {
           />
           <button
             type="submit"
-            className="text-sm border-2 border-[#990000] text-[#990000] hover:bg-[#642424] hover:text-white py-1 rounded-md"
+            className="text-sm border-2 border-[#990000] text-[#990000] hover:bg-[#990000] hover:text-white py-1 rounded-md"
           >
             {loading ? (
               <div className="flex flex-col items-center justify-center gap-3">
-                <Loading color="text-yellow-400" />
+                <Loading color="text-white" />
               </div>
             ) : (
               "Tambahkan Layanan"

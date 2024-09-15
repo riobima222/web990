@@ -98,7 +98,7 @@ const LayananPage = () => {
                   </div>
                   <div className="w-full">
                     <h2 className="font-bold underline hover:no-underline hover:cursor-pointer hover:text-blue-400">
-                      <Link href={`/layanan/${item.id}`}>{item.title}</Link>
+                      <Link href={`/kegiatan/${item.id}`}>{item.title}</Link>
                     </h2>
                     <p className="text-sm text-gray-400">{item.ketSingkat}</p>
                     <div className="flex items-center w-full justify-start mt-3">

@@ -163,3 +163,12 @@ export const getDetailKegiatan = async (idKegiatan: string) => {
     return false;
   }
 };
+
+export const deleteKegiatan = async (idKegiatan: string) => {
+  try {
+    await deleteDoc(doc(db, "kegiatan", idKegiatan));
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
