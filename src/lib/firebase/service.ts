@@ -1,6 +1,7 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -102,6 +103,15 @@ export const getDetailLayanan = async (idLayanan: string) => {
     const snapshot = await getDoc(doc(db, "layanan", idLayanan));
     const data = snapshot.data();
     return data;
+  } catch (err) {
+    return false;
+  }
+};
+
+export const deleteLayanan = async (idLayanan: string) => {
+  try {
+    await deleteDoc(doc(db, "layanan", idLayanan));
+    return true;
   } catch (err) {
     return false;
   }

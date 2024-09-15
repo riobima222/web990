@@ -1,17 +1,21 @@
 import HTMLContent from "@/components/every/htmlContent";
 import Loading from "@/components/every/loading";
 import Footer from "@/components/footer/footer";
+import ConfirmDelete from "@/components/layout/ConfirmDelete";
+
 import ClientNavbar from "@/components/navbar/clientNavbar";
+import { ModalAppearContext } from "@/context/modalAppear";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 const DetailLayanan = () => {
   const kontakRef = useRef<HTMLDivElement>(null);
   const [layanan, setLayanan] = useState<any>(false);
+  const { showModal, setShowModal }: any = useContext(ModalAppearContext);
   const { data: session } = useSession();
-  const router = useRouter();
+  const router: any = useRouter();
 
   const fetchDetailLayanan = async () => {
     const res = await fetch(
@@ -86,6 +90,7 @@ const DetailLayanan = () => {
                 <button
                   type="button"
                   className="px-5 py-2 bg-red-400 hover:bg-red-600 text-white rounded-md"
+                  onClick={() => setShowModal(true)}
                 >
                   Hapus layanan
                 </button>
@@ -100,6 +105,7 @@ const DetailLayanan = () => {
         </div>
       </div>
       <Footer kontakRef={kontakRef} />
+      {showModal && <ConfirmDelete from="layanan" id={router.query.idLayanan} />}
     </div>
   );
 };

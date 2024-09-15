@@ -205,8 +205,7 @@ const TambahKegiatan = () => {
           >
             {loading ? (
               <div className="flex flex-col items-center justify-center gap-3">
-                <Loading color="text-[#990000]" />
-                <span>wait..</span>
+                <Loading color="text-yellow-400" />
               </div>
             ) : (
               "Tambahkan Kegiatan"
