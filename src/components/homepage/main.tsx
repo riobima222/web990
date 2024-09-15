@@ -3,15 +3,18 @@ import Book from "@/components/homepage/book";
 import Hero from "@/components/homepage/hero";
 import Navbar from "@/components/navbar/navbar";
 import { useSession } from "next-auth/react";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import SearchSection from "./searchSection";
 
 // ICONS
 import { IoIosAdd } from "react-icons/io";
+import { ModalAppearContext } from "@/context/modalAppear";
+import TambahJurnal from "../layout/tambahJurnal";
 
 const Main = () => {
   const daftarBuku = useRef<HTMLDivElement>(null);
   const kontakRef = useRef<HTMLDivElement>(null);
+  const { showModal, setShowModal }: any = useContext(ModalAppearContext);
   const { data: session } = useSession();
 
   const scrollToDaftarBuku = () => {
@@ -40,44 +43,44 @@ const Main = () => {
         className="--STATISTIC OVERVIEW-- flex justify-center"
       >
         <div className="--CONTENT-- border-2 border-yellow-500 rounded-md max-w-[40em] w-full p-3 grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div className="bg-[#990000] p-2 rounded-md">
-            <h2 className="text-3xl text-white font-bold">110</h2>
-            <span className="text-[#b5b5b5]">Journals</span>
+          <div className="bg-[#990000] p-2 rounded-md flex flex-col justify-between">
+            <h2 className="text-3xl text-white font-bold">0</h2>
+            <span className="text-white">Journals</span>
           </div>
 
-          <div className="bg-[#990000] p-2 rounded-md">
-            <h2 className="text-3xl text-white font-bold">110</h2>
-            <span className="text-[#b5b5b5]">Journals</span>
+          <div className="bg-[#990000] p-2 rounded-md flex flex-col justify-between">
+            <h2 className="text-3xl text-white font-bold">0</h2>
+            <span className="text-white">Accredited Journals</span>
           </div>
 
-          <div className="bg-[#990000] p-2 rounded-md">
+          <div className="bg-[#990000] p-2 rounded-md flex flex-col justify-between">
             <h2 className="text-3xl text-white font-bold">110</h2>
-            <span className="text-[#b5b5b5]">Journals</span>
+            <span className="text-white">Google Scholar</span>
           </div>
 
-          <div className="bg-[#990000] p-2 rounded-md">
-            <h2 className="text-3xl text-white font-bold">110</h2>
-            <span className="text-[#b5b5b5]">Journals</span>
+          <div className="bg-[#990000] p-2 rounded-md flex flex-col justify-between">
+            <h2 className="text-3xl text-white font-bold">0</h2>
+            <span className="text-white">Garuda</span>
           </div>
 
-          <div className="bg-[#990000] p-2 rounded-md">
+          <div className="bg-[#990000] p-2 rounded-md flex flex-col justify-between">
             <h2 className="text-3xl text-white font-bold">110</h2>
-            <span className="text-[#b5b5b5]">Journals</span>
+            <span className="text-white">ROAD</span>
           </div>
 
-          <div className="bg-[#990000] p-2 rounded-md">
+          <div className="bg-[#990000] p-2 rounded-md flex flex-col justify-between">
             <h2 className="text-3xl text-white font-bold">110</h2>
-            <span className="text-[#b5b5b5]">Journals</span>
+            <span className="text-white">Copernicus</span>
           </div>
 
-          <div className="bg-[#990000] p-2 rounded-md">
+          <div className="bg-[#990000] p-2 rounded-md flex flex-col justify-between">
             <h2 className="text-3xl text-white font-bold">110</h2>
-            <span className="text-[#b5b5b5]">Journals</span>
+            <span className="text-white">Crosref</span>
           </div>
 
-          <div className="bg-[#990000] p-2 rounded-md">
+          <div className="bg-[#990000] p-2 rounded-md flex flex-col justify-between">
             <h2 className="text-3xl text-white font-bold">110</h2>
-            <span className="text-[#b5b5b5]">Journals</span>
+            <span className="text-white">Handling by Pubmedia</span>
           </div>
         </div>
       </div>
@@ -92,7 +95,10 @@ const Main = () => {
         {session && (
           <div className="-ADD JOURNAL flex justify-center mt-10">
             <div className="-CONTENT- max-w-[60em] w-full flex">
-              <div className="-BUTTON- flex items-center hover:cursor-pointer border-2 border-[#990000] text-[#990000] px-2 p-1 rounded-md hover:bg-[#990000] hover:text-white">
+              <div
+                onClick={() => setShowModal(true)}
+                className="-BUTTON- flex items-center hover:cursor-pointer border-2 border-[#990000] text-[#990000] px-2 p-1 rounded-md hover:bg-[#990000] hover:text-white"
+              >
                 <div>
                   <IoIosAdd className="text-2xl" />
                 </div>
@@ -119,6 +125,7 @@ const Main = () => {
       </div>
 
       <Footer kontakRef={kontakRef} />
+      {showModal && <TambahJurnal />}
     </div>
   );
 };

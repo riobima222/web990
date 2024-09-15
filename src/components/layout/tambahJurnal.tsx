@@ -19,9 +19,8 @@ import { AlertSuccessContext } from "@/context/alertSuccess";
 import { AlertFailedContext } from "@/context/alertFailed";
 import { AlertMessageContext } from "@/context/alertMessage";
 import { CustomeSession } from "@/interface/customeSession";
-import DynamicReactQuill from "../layanan/DynamicReactQuill";
 
-const TambahKegiatan = () => {
+const TambahJurnal = () => {
   // CONTEXT
   const { setFetchTrigger } = useContext(FetchTriggerContext) as {
     setFetchTrigger: React.Dispatch<React.SetStateAction<boolean>>;
@@ -39,32 +38,48 @@ const TambahKegiatan = () => {
     setAlertMessage: React.Dispatch<React.SetStateAction<string>>;
   };
 
-  const [value, setValue] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState<File | null>(null);
   const storage = getStorage(app);
   const { data: session } = useSession() as { data: CustomeSession | null };
-  console.log(session);
+  const [imageMessage, setImageMessage] = useState<string>("");
 
   const handleAddLayanan = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+    if (image === null) {
+      setImageMessage("gambar harus diisi");
+      setTimeout(() => {
+        setLoading(false);
+        setTimeout(() => {
+          setImageMessage("");
+        }, 1000);
+      }, 1000);
+      return;
+    }
     const form = e.target as HTMLFormElement;
     const title = (form.elements.namedItem("title") as HTMLInputElement).value;
-    const ketSingkat = (
-      form.elements.namedItem("ketsingkat") as HTMLInputElement
+    const sinta = (form.elements.namedItem("sinta") as HTMLInputElement).value;
+    const linkjurnal = (
+      form.elements.namedItem("linkjurnal") as HTMLInputElement
     ).value;
-    const linkvideo = (form.elements.namedItem("linkvideo") as HTMLInputElement)
+    const internasional = (
+      form.elements.namedItem("internasional") as HTMLInputElement
+    ).value;
+    const nasional = (form.elements.namedItem("nasional") as HTMLInputElement)
       .value;
     const data = {
       title,
-      ketSingkat,
-      keterangan: value,
-      linkvideo,
+      sinta,
+      linkjurnal,
+      nasional_indexed: nasional === "nasional-indexed" ? false : nasional,
+      internasional_indexed:
+        internasional === "internasional-indexed" ? false : internasional,
       image: "",
+      created_At: Date(),
     };
     if (session) {
-      const res = await fetch("/api/kegiatan/addkegiatan", {
+      const res = await fetch("/api/jurnal/add", {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -76,13 +91,10 @@ const TambahKegiatan = () => {
 
       if (res.ok) {
         const response = await res.json();
-        const idKegiatan = response.data;
+        const idJurnal = response.data;
         const image = form.image.files[0];
-        const newName = `kegiatan-image.${image.name.split(".")[1]}`;
-        const storageRef = ref(
-          storage,
-          `images/kegiatan/${idKegiatan}/${newName}`
-        );
+        const newName = `jurnal-image.${image.name.split(".")[1]}`;
+        const storageRef = ref(storage, `images/jurnal/${idJurnal}/${newName}`);
         const uploadTask = uploadBytesResumable(storageRef, image);
         uploadTask.on(
           "state_changed",
@@ -97,9 +109,9 @@ const TambahKegiatan = () => {
           () => {
             getDownloadURL(uploadTask.snapshot.ref).then((imageURL) => {
               const kegiatanImage = async () => {
-                const res = await fetch("/api/kegiatan/updateimagekegiatan", {
+                const res = await fetch("/api/jurnal/updateimage", {
                   method: "POST",
-                  body: JSON.stringify({ idKegiatan, imageURL }),
+                  body: JSON.stringify({ idJurnal, imageURL }),
                   headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${session?.token}` || "",
@@ -142,7 +154,19 @@ const TambahKegiatan = () => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setImage(e.target.files[0]);
+      const name = e.target.files[0].name.split(".")[1];
+      if (name !== "jpg") {
+        setImage(null);
+        setImageMessage("harus format: .jpg");
+        setTimeout(() => {
+          setLoading(false);
+          setTimeout(() => {
+            setImageMessage("");
+          }, 1000);
+        }, 1000);
+      } else {
+        setImage(e.target.files[0]);
+      }
     }
   };
 
@@ -158,24 +182,59 @@ const TambahKegiatan = () => {
             placeholder="Title"
             className="text-sm focus:outline-none border-[2px] border-[#990000] px-3 py-2 rounded-md"
             name="title"
+            required
+          />
+          <input
+            type="number"
+            placeholder="Sinta"
+            className="text-sm focus:outline-none border-[2px] border-[#990000] px-3 py-2 rounded-md"
+            name="sinta"
+            required
           />
           <input
             type="text"
-            placeholder="keterangan singkat kegiatan"
+            placeholder="link jurnal"
             className="text-sm focus:outline-none border-[2px] border-[#990000] px-3 py-2 rounded-md"
-            name="ketsingkat"
+            name="linkjurnal"
+            required
           />
-          <input
-            type="text"
-            placeholder="Masukan link video"
-            className="text-sm focus:outline-none border-[2px] border-[#990000] px-3 py-2 rounded-md"
-            name="linkvideo"
-          />
-          <DynamicReactQuill
-            value={value}
-            onChange={(content: string) => setValue(content)}
-          />
-          <div className="flex justify-center gap-3">
+          <label htmlFor="" className="text-sm ms-3">
+            Pilih category :
+          </label>
+          <div className="flex gap-2">
+            <select
+              defaultValue="internasional-indexed"
+              className="select select-error border-[#990000] w-full max-w-xs focus:outline-none focus:border-[#990000]"
+              name="internasional"
+            >
+              <option value={"internasional-indexed"} disabled>
+                International Indexed
+              </option>
+              <option value={"google-scholar"}>Google Scholar</option>
+              <option value={"road"}>ROAD</option>
+              <option value={"doaj"}>DOAJ</option>
+              <option value={"scopus"}>Scopus</option>
+              <option value={"copernicus"}>Copernicus</option>
+              <option value={"crossref"}>Crossref</option>
+              <option value={"international-journal"}>
+                International Journal
+              </option>
+            </select>
+            <select
+              defaultValue="nasional-indexed"
+              className="select select-error w-full border-[#990000] max-w-xs focus:outline-none focus:border-[#990000]"
+              name="nasional"
+            >
+              <option value={"nasional-indexed"} disabled>
+                National Indexed
+              </option>
+              <option value={"garuda"}>Garuda</option>
+              <option value={"handling-by-pubmedia"}>
+                Handling by pubmedia
+              </option>
+            </select>
+          </div>
+          <div className="flex justify-center items-center gap-3">
             <label
               htmlFor="image"
               className="text-sm text-gray-700 border-2 text-center p-2 rounded-md w-[9em] hover:cursor-pointer"
@@ -191,6 +250,9 @@ const TambahKegiatan = () => {
                 className="w-[10em]"
               />
             )}
+            {imageMessage !== "" && (
+              <span className="text-red-400 text-sm">{imageMessage}</span>
+            )}
           </div>
           <input
             onChange={handleChange}
@@ -201,14 +263,14 @@ const TambahKegiatan = () => {
           />
           <button
             type="submit"
-            className="text-sm border-2 border-[#990000] text-[#990000] hover:bg-[#642424] hover:text-white py-1 rounded-md"
+            className="text-sm border-2 border-[#990000] text-[#990000] hover:bg-[#990000] hover:text-white py-1 rounded-md"
           >
             {loading ? (
               <div className="flex flex-col items-center justify-center gap-3">
-                <Loading color="text-yellow-400" />
+                <Loading color="text-white" />
               </div>
             ) : (
-              "Tambahkan Kegiatan"
+              "Tambahkan jurnal"
             )}
           </button>
         </form>
@@ -216,4 +278,4 @@ const TambahKegiatan = () => {
     </Modal>
   );
 };
-export default TambahKegiatan;
+export default TambahJurnal;

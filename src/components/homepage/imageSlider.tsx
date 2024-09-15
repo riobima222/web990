@@ -47,21 +47,7 @@ const ImageSlider = () => {
               fill={true}
               style={{ objectFit: "cover" }}
             />
-            <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-start p-10">
-              <div className="text-white">
-                <p className="font-bold text-sm uppercase">Services</p>
-                <p className="text-1xl sm:text-3xl font-bold">{slide.title}</p>
-                <p className="text-1xl sm:text-3xl mb-10 leading-none">
-                  {slide.subtitle}
-                </p>
-                <a
-                  href="#"
-                  className="bg-purple-800 py-4 px-8 text-white font-bold uppercase text-xs rounded hover:bg-gray-200 hover:text-gray-800"
-                >
-                  Contact us
-                </a>
-              </div>
-            </div>
+            <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-start p-10"></div>
           </div>
         </div>
       ))}

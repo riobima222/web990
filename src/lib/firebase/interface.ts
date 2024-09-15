@@ -10,6 +10,7 @@ export interface DataRegister {
   admin: string;
   createdAt: Date;
 }
+
 export interface LayananInter {
   title: string;
   kontak: string;
@@ -17,6 +18,7 @@ export interface LayananInter {
   keterangan: string;
   image: string;
   ketSingkat: string;
+  created_At: Date;
 }
 
 export interface KegiatanInter {
@@ -25,4 +27,13 @@ export interface KegiatanInter {
   keterangan: string;
   image: string;
   ketSingkat: string;
+  created_At: Date;
+}
+
+export interface JurnalInter {
+  title: string;
+  sinta: string;
+  linkjurnal: string;
+  image: string;
+  created_At: Date;
 }

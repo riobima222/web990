@@ -14,6 +14,7 @@ import bcrypt from "bcrypt";
 import {
   DataLogin,
   DataRegister,
+  JurnalInter,
   KegiatanInter,
   LayananInter,
 } from "./interface";
@@ -167,6 +168,30 @@ export const getDetailKegiatan = async (idKegiatan: string) => {
 export const deleteKegiatan = async (idKegiatan: string) => {
   try {
     await deleteDoc(doc(db, "kegiatan", idKegiatan));
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
+// JURNAL
+export const addJurnal = async (data: JurnalInter) => {
+  try {
+    const docRef = await addDoc(collection(db, "jurnal"), data);
+    return docRef.id;
+  } catch (err) {
+    return false;
+  }
+};
+
+export const updateImageJurnal = async (data: {
+  idJurnal: string;
+  imageURL: string;
+}) => {
+  try {
+    await updateDoc(doc(db, "jurnal", data.idJurnal), {
+      image: data.imageURL,
+    });
     return true;
   } catch (err) {
     return false;

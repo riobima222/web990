@@ -76,6 +76,7 @@ const TambahLayanan = () => {
       ketSingkat,
       value,
       image: "",
+      created_At: Date(),
     };
     if (session) {
       const res = await fetch("/api/layanan/addlayanan", {

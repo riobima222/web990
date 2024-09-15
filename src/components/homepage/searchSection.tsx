@@ -21,25 +21,22 @@ const SearchSection = () => {
             All
           </span>
           <select
-            defaultValue="International indexed"
+            defaultValue="International-indexed"
             className="select select-error w-full border-none max-w-xs focus:outline-none"
           >
-            <option disabled>International indexed</option>
+            <option value={"Internasional-indexed"} disabled>International indexed</option>
             <option value={"google scholar"}>Google Scholar</option>
             <option value={"road"}>ROAD</option>
             <option value={"doaj"}>DOAJ</option>
             <option value={"scopus"}>Scopus</option>
             <option value={"copernicus"}>Copernicus</option>
             <option value={"crossref"}>Crossref</option>
-            <option value={"international journal"}>
-              International Journal
-            </option>
           </select>
           <select
-            defaultValue="National indexed"
+            defaultValue="National-indexed"
             className="select select-error w-full border-none max-w-xs focus:outline-none"
           >
-            <option disabled>National indexed</option>
+            <option value={"nasional-indexed"} disabled>National indexed</option>
             <option value={"garuda"}>Garuda</option>
             <option value={"handling by pubmedia"}>Handling by pubmedia</option>
           </select>

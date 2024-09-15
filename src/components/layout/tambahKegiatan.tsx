@@ -73,6 +73,7 @@ const TambahKegiatan = () => {
       keterangan: value,
       linkvideo,
       image: "",
+      created_At: Date()
     };
     if (session) {
       const res = await fetch("/api/kegiatan/addkegiatan", {
