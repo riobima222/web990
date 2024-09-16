@@ -197,3 +197,16 @@ export const updateImageJurnal = async (data: {
     return false;
   }
 };
+
+export const getAllJurnal = async () => {
+  try {
+    const snapshot = await getDocs(collection(db, "jurnal"));
+    const data = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return data;
+  } catch (err) {
+    return false;
+  }
+};

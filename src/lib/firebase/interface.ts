@@ -36,4 +36,6 @@ export interface JurnalInter {
   linkjurnal: string;
   image: string;
   created_At: Date;
+  internasional_indexed: string;
+  nasional_indexed: string;
 }

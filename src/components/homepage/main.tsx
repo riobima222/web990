@@ -1,5 +1,4 @@
 import Footer from "@/components/footer/footer";
-import Book from "@/components/homepage/book";
 import Hero from "@/components/homepage/hero";
 import Navbar from "@/components/navbar/navbar";
 import { useSession } from "next-auth/react";
@@ -10,6 +9,7 @@ import SearchSection from "./searchSection";
 import { IoIosAdd } from "react-icons/io";
 import { ModalAppearContext } from "@/context/modalAppear";
 import TambahJurnal from "../layout/tambahJurnal";
+import Jurnal from "./jurnal";
 
 const Main = () => {
   const daftarBuku = useRef<HTMLDivElement>(null);
@@ -108,19 +108,7 @@ const Main = () => {
           </div>
         )}
         <div className="--BOOK CONTENT--  min-h-[20em] flex justify-center mt-4">
-          <div
-            className="max-w-[65em] w-full flex justify-center flex-wrap gap-2 sm:gap-5"
-            data-aos="zoom-in-down"
-            data-aos-easing="ease-in"
-            data-aos-duration="1100"
-          >
-            <Book />
-            <Book />
-            <Book />
-            <Book />
-            <Book />
-            <Book />
-          </div>
+          <Jurnal />
         </div>
       </div>
 
