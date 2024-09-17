@@ -1,3 +1,5 @@
+import { ChangeEvent } from "react";
+
 const SearchSection = () => {
   return (
     <div
@@ -24,8 +26,10 @@ const SearchSection = () => {
             defaultValue="International-indexed"
             className="select select-error w-full border-none max-w-xs focus:outline-none"
           >
-            <option value={"Internasional-indexed"} disabled>International indexed</option>
-            <option value={"google scholar"}>Google Scholar</option>
+            <option value={"Internasional-indexed"} disabled>
+              International indexed
+            </option>
+            <option value={"google-scholar"}>Google Scholar</option>
             <option value={"road"}>ROAD</option>
             <option value={"doaj"}>DOAJ</option>
             <option value={"scopus"}>Scopus</option>
@@ -36,7 +40,9 @@ const SearchSection = () => {
             defaultValue="National-indexed"
             className="select select-error w-full border-none max-w-xs focus:outline-none"
           >
-            <option value={"nasional-indexed"} disabled>National indexed</option>
+            <option value={"nasional-indexed"} disabled>
+              National indexed
+            </option>
             <option value={"garuda"}>Garuda</option>
             <option value={"handling by pubmedia"}>Handling by pubmedia</option>
           </select>

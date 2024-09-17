@@ -10,6 +10,7 @@ import ModalAppearProvider from "@/context/modalAppear";
 import AlertSuccessProvider from "@/context/alertSuccess";
 import AlertFailedProvider from "@/context/alertFailed";
 import AlertMessageProvider from "@/context/alertMessage";
+import DataJurnalProvider from "@/context/dataJurnal";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,11 +33,15 @@ export default function App({
         <AlertSuccessProvider>
           <AlertFailedProvider>
             <AlertMessageProvider>
-              <SessionProvider session={session}>
-                <div className={`${geistSans.variable} ${geistMono.variable}`}>
-                  <Component {...pageProps} />
-                </div>
-              </SessionProvider>
+              <DataJurnalProvider>
+                <SessionProvider session={session}>
+                  <div
+                    className={`${geistSans.variable} ${geistMono.variable}`}
+                  >
+                    <Component {...pageProps} />
+                  </div>
+                </SessionProvider>
+              </DataJurnalProvider>
             </AlertMessageProvider>
           </AlertFailedProvider>
         </AlertSuccessProvider>

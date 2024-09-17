@@ -1,14 +1,17 @@
 import Book from "@/components/homepage/book";
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import Loading from "../every/loading";
 
 // ICONS
 import { FaFileExcel } from "react-icons/fa";
 import { JurnalInter } from "@/lib/firebase/interface";
+import { FetchTriggerContext } from "@/context/fetchTrigger";
+import { DataJurnalContext } from "@/context/dataJurnal";
 
 const Jurnal = () => {
-  const [allJurnal, setAllJurnal] = useState<boolean | any>(false);
-  console.log("Ini semua Jurnal : ", allJurnal);
+  const {dataJurnal, setDataJurnal}: any = useContext(DataJurnalContext)
+  console.log("Ini semua Jurnal : ", dataJurnal);
+  const { fetchTrigger }: any = useContext(FetchTriggerContext);
 
   const fetchAllJurnal = async () => {
     const res = await fetch("/api/jurnal/getall", {
@@ -20,7 +23,7 @@ const Jurnal = () => {
     });
     const data = await res.json();
     if (res.ok) {
-      setAllJurnal(data.data);
+      setDataJurnal(data.data);
     } else {
       console.log(data);
     }
@@ -28,7 +31,7 @@ const Jurnal = () => {
 
   useEffect(() => {
     fetchAllJurnal();
-  }, []);
+  }, [fetchTrigger]);
   return (
     <div
       className="max-w-[65em] w-full flex justify-center flex-wrap gap-2 sm:gap-5"
@@ -36,11 +39,9 @@ const Jurnal = () => {
       data-aos-easing="ease-in"
       data-aos-duration="1100"
     >
-      {allJurnal.length > 0 ? (
-        allJurnal.map((e: JurnalInter, i: number) => (
-          <Book key={i} data={e}/>
-        ))
-      ) : allJurnal === false ? (
+      {dataJurnal.length > 0 ? (
+        dataJurnal.map((e: JurnalInter, i: number) => <Book key={i} data={e} />)
+      ) : dataJurnal === false ? (
         <div className="flex flex-col items-center justify-center gap-3">
           <Loading color="text-[#990000]" />
           <span className="text-sm">Loading..</span>
