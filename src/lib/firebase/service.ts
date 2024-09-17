@@ -213,13 +213,24 @@ export const getAllJurnal = async () => {
 
 export const getFilterJurnal = async (type: string, value: string) => {
   try {
-    let q 
-    if(type === "nasional") {
-      q = query(collection(db, "jurnal"), where("nasional_indexed", "==", value))
+    let q;
+    if (type === "nasional") {
+      q = query(
+        collection(db, "jurnal"),
+        where("nasional_indexed", "==", value)
+      );
     } else if (type === "internasional") {
-      q = query(collection(db, "jurnal"), where("internasional_indexed", "==", value))
+      q = query(
+        collection(db, "jurnal"),
+        where("internasional_indexed", "==", value)
+      );
     } else {
-      q = query(collection(db, "jurnal"), )
+      // Pencarian case-insensitive
+      const searchTerm = value.toLowerCase().trim();
+      q = query(
+        collection(db, "jurnal"),
+        where("keywords", "array-contains", searchTerm)
+      );
     }
     const snapshot = await getDocs(q);
     const data = snapshot.docs.map((doc) => ({
@@ -228,6 +239,7 @@ export const getFilterJurnal = async (type: string, value: string) => {
     }));
     return data;
   } catch (err) {
-    return false;
+    console.error("Error in getFilterJurnal:", err);
+    return [];
   }
-}
+};

@@ -19,6 +19,7 @@ import { AlertSuccessContext } from "@/context/alertSuccess";
 import { AlertFailedContext } from "@/context/alertFailed";
 import { AlertMessageContext } from "@/context/alertMessage";
 import { CustomeSession } from "@/interface/customeSession";
+import { generateKeywords } from "../homepage/generateKeywords";
 
 const TambahJurnal = () => {
   // CONTEXT
@@ -68,6 +69,9 @@ const TambahJurnal = () => {
     ).value;
     const nasional = (form.elements.namedItem("nasional") as HTMLInputElement)
       .value;
+
+    const keywords = generateKeywords(title)
+
     const data = {
       title,
       sinta,
@@ -77,6 +81,7 @@ const TambahJurnal = () => {
         internasional === "internasional-indexed" ? false : internasional,
       image: "",
       created_At: Date(),
+      keywords
     };
     if (session) {
       const res = await fetch("/api/jurnal/add", {

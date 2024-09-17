@@ -3,7 +3,7 @@ import { apiResponse } from "@/utils/apiResponse";
 import { NextApiResponse, NextApiRequest } from "next";
 
 export default async function handler (req: NextApiRequest, res: NextApiResponse) {
-    const {search}: any = req.query;
-    const response = await getFilterJurnal("search", search);
+    const { value }: any = req.query;
+    const response = await getFilterJurnal("search", value);
     return apiResponse(res, response, "berhasil ambil filter jurnal", response);
 }

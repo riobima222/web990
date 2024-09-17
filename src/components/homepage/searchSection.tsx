@@ -30,9 +30,18 @@ const SearchSection = () => {
 
   const search = async (e: ChangeEvent<HTMLInputElement>) => {
     setDataJurnal(false);
-    if(e.target.value.length > 2) {
-      const res = await fetch("/api/jurnal/search?value=" + e.target.value);
-      console.log(res);
+    const searchTerm = e.target.value.trim();
+    if (searchTerm.length > 2) {
+      try {
+        const res = await fetch(
+          `/api/jurnal/search?value=${encodeURIComponent(searchTerm)}`
+        );
+        if (!res.ok) throw new Error("jaringan response tidak oke");
+        const response = await res.json();
+        setDataJurnal(response.data);
+      } catch (error) {
+        console.error("pengambilan data error:", error);
+      }
     }
   };
 
@@ -46,6 +55,7 @@ const SearchSection = () => {
       cache: "no-store",
     });
     const data = await res.json();
+    console.log(data.data);
     if (res.ok) {
       setDataJurnal(data.data);
     } else {
