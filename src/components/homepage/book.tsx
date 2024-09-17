@@ -4,7 +4,6 @@ import { useState } from "react";
 
 const Book = ({ data }: { data: JurnalInter }) => {
   const [isHovered, setIsHovered] = useState(false);
-  console.log("data : ", data);
 
   return (
     <div

@@ -210,3 +210,24 @@ export const getAllJurnal = async () => {
     return false;
   }
 };
+
+export const getFilterJurnal = async (type: string, value: string) => {
+  try {
+    let q 
+    if(type === "nasional") {
+      q = query(collection(db, "jurnal"), where("nasional_indexed", "==", value))
+    } else if (type === "internasional") {
+      q = query(collection(db, "jurnal"), where("internasional_indexed", "==", value))
+    } else {
+      q = query(collection(db, "jurnal"), )
+    }
+    const snapshot = await getDocs(q);
+    const data = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return data;
+  } catch (err) {
+    return false;
+  }
+}

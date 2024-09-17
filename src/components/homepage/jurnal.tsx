@@ -51,7 +51,7 @@ const Jurnal = () => {
           <div>
             <FaFileExcel className="text-xl" />
           </div>
-          <span>Layanan masih kosong</span>
+          <span>Tidak ada</span>
         </div>
       )}
     </div>
