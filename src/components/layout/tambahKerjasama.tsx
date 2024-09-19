@@ -61,25 +61,25 @@ const TambahKerjasama = () => {
       return;
     }
     const form = e.target as HTMLFormElement;
-    const title = (form.elements.namedItem("title") as HTMLInputElement).value;
-    const tagihan = (form.elements.namedItem("tagihan") as HTMLInputElement)
+    const kampus = (form.elements.namedItem("kampus") as HTMLInputElement).value;
+    const rektor = (form.elements.namedItem("rektor") as HTMLInputElement)
       .value;
-    const kontak = (form.elements.namedItem("kontak") as HTMLInputElement)
+    const hubungan = (form.elements.namedItem("hubungan") as HTMLInputElement)
       .value;
-    const ketSingkat = (
-      form.elements.namedItem("ketsingkat") as HTMLInputElement
+    const date = (
+      form.elements.namedItem("date") as HTMLInputElement
     ).value;
     const data = {
-      title,
-      tagihan,
-      kontak,
-      ketSingkat,
+      kampus,
+      rektor,
+      hubungan,
+      date,
       value,
       image: "",
       created_At: Date(),
     };
     if (session) {
-      const res = await fetch("/api/layanan/addlayanan", {
+      const res = await fetch("/api/kerjasama/add", {
         method: "POST",
         body: JSON.stringify(data),
         headers: {
@@ -91,12 +91,12 @@ const TambahKerjasama = () => {
 
       if (res.ok) {
         const response = await res.json();
-        const idLayanan = response.data;
+        const idKerjasama = response.data;
         const image = form.image.files[0];
-        const newName = `layanan-image.${image.name.split(".")[1]}`;
+        const newName = `kerjasama-image.${image.name.split(".")[1]}`;
         const storageRef = ref(
           storage,
-          `images/layanan/${idLayanan}/${newName}`
+          `images/kerjasama/${idKerjasama}/${newName}`
         );
         const uploadTask = uploadBytesResumable(storageRef, image);
         uploadTask.on(
@@ -112,9 +112,9 @@ const TambahKerjasama = () => {
           () => {
             getDownloadURL(uploadTask.snapshot.ref).then((imageURL) => {
               const layananImage = async () => {
-                const res = await fetch("/api/layanan/updateimagelayanan", {
+                const res = await fetch("/api/kerjasama/updateImage", {
                   method: "POST",
-                  body: JSON.stringify({ idLayanan, imageURL }),
+                  body: JSON.stringify({ idKerjasama, imageURL }),
                   headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${session?.token}` || "",
@@ -158,9 +158,9 @@ const TambahKerjasama = () => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const name = e.target.files[0].name.split(".")[1];
-      if (name !== "jpg") {
+      if (name !== "png") {
         setImage(null);
-        setImageMessage("harus format: .jpg");
+        setImageMessage("harus format: .png");
         setTimeout(() => {
           setLoading(false);
           setTimeout(() => {
@@ -182,30 +182,30 @@ const TambahKerjasama = () => {
         >
           <input
             type="text"
-            placeholder="Title"
+            placeholder="Nama kampus"
             className="text-sm focus:outline-none border-[2px] border-[#990000] px-3 py-2 rounded-md"
-            name="title"
+            name="kampus"
             required
           />
           <input
             type="text"
-            placeholder="tagihan"
+            placeholder="Nama Rektor"
             className="text-sm focus:outline-none border-[2px] border-[#990000] px-3 py-2 rounded-md"
-            name="tagihan"
+            name="rektor"
             required
           />
           <input
             type="text"
-            placeholder="kontak"
+            placeholder="Hubungan Kerjasama"
             className="text-sm focus:outline-none border-[2px] border-[#990000] px-3 py-2 rounded-md"
-            name="kontak"
+            name="hubungan"
             required
           />
           <input
             type="text"
-            placeholder="keterangan singkat layanan"
+            placeholder="20 agustus 2024"
             className="text-sm focus:outline-none border-[2px] border-[#990000] px-3 py-2 rounded-md"
-            name="ketsingkat"
+            name="date"
             required
           />
           <DynamicReactQuill
@@ -218,7 +218,7 @@ const TambahKerjasama = () => {
               className="text-sm text-gray-700 border-2 text-center p-2 rounded-md w-[9em] hover:cursor-pointer"
             >
               masukan gambar disini, maximal <strong>1mb</strong> format{" "}
-              <strong>.jpg</strong>
+              <strong>.png</strong>
             </label>
             {image && (
               <Image

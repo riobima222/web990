@@ -2,7 +2,7 @@
 import Footer from "@/components/footer/footer";
 import ClientNavbar from "@/components/navbar/clientNavbar";
 import { ModalAppearContext } from "@/context/modalAppear";
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { IoIosAdd } from "react-icons/io";
 import { FetchTriggerContext } from "@/context/fetchTrigger";
 import { useSession } from "next-auth/react";
@@ -13,10 +13,14 @@ import Image from "next/image";
 // ICONS
 import { MdConnectWithoutContact } from "react-icons/md";
 import { BsCalendar2DateFill } from "react-icons/bs";
+import Loading from "@/components/every/loading";
+import { FaFileExcel } from "react-icons/fa";
+import HTMLContent from "@/components/every/htmlContent";
 
 const KerjasamaPage = () => {
   const kontakRef = useRef<HTMLDivElement>(null);
-  // const [kerjasama, setKerjasama] = useState<any>(false);
+  const [kerjasama, setKerjasama] = useState<any>(false);
+  console.log(kerjasama);
   const { data: session } = useSession();
 
   // CONTEXT
@@ -26,7 +30,7 @@ const KerjasamaPage = () => {
 
   useEffect(() => {
     const fetchLayanan = async () => {
-      const res = await fetch("/api/layanan/getall", {
+      const res = await fetch("/api/kerjasama/getall", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -35,8 +39,7 @@ const KerjasamaPage = () => {
       });
       if (res.ok) {
         const data = await res.json();
-        console.log("ini adalah data", data.data);
-        // setKerjasama(data.data);
+        setKerjasama(data.data);
       } else {
         console.log(res);
       }
@@ -77,101 +80,65 @@ const KerjasamaPage = () => {
             </div>
           </div>
           <div className="-CONTENT WRAPPER- mt-4 max-w-[65em] min-h-48 mb-16 mx-auto py-3 flex flex-wrap gap-5 justify-center items-center">
-            <div className="CONTENT bg-white p-3 flex gap-3 max-w-[65em] w-full rounded-md">
-              <div className="-LEFT CONTENT- w-[30em] flex items-center justify-center">
-                <div className="-LOGO CAMPUS text-sm flex flex-col justify-center items-center gap-3">
-                  <Image
-                    src={"/images/logo_kampus.png"}
-                    alt="Logo_kampus"
-                    width={200}
-                    height={200}
-                    className="drop-shadow-xl"
-                  />
-                  <div className="flex gap-3 font-bold">
-                    <div className="">
-                      <div>Nama Kampus</div>
-                      <div>Rektor</div>
-                    </div>
-                    <div>
-                      <div> : Universitas Indonesia</div>
-                      <div> : Herman Soeharto</div>
+            {kerjasama ? (
+              kerjasama.map((e: any, i: number) => (
+                <div
+                  key={i}
+                  className="CONTENT bg-white p-3 flex gap-3 max-w-[65em] w-full rounded-md"
+                >
+                  <div className="-LEFT CONTENT- w-[30em] flex items-center justify-center">
+                    <div className="-LOGO CAMPUS text-sm flex flex-col justify-center items-center gap-3">
+                      <Image
+                        src={"/images/logo_kampus.png"}
+                        alt="Logo_kampus"
+                        width={200}
+                        height={200}
+                        className="drop-shadow-xl"
+                      />
+                      <div className="flex gap-3 font-bold">
+                        <div className="">
+                          <div>Nama Kampus</div>
+                          <div>Rektor</div>
+                        </div>
+                        <div>
+                          <div> : {e.kampus}</div>
+                          <div> : {e.rektor}</div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div className="-RIGHT CONTENT- w-full flex flex-col gap-4 bg-[#f1f1f1] p-3 rounded-md">
-                <div className="-TOP CONTENT- flex gap-3">
-                  <div>
-                    <MdConnectWithoutContact className="text-2xl" />
-                  </div>
-                  <p className="text-sm font-bold">
-                    TULIS HUBUNGAN KERJASAMA DISINI...
-                  </p>
-                </div>
-                <div className="-BUTTON CONTENT- flex items-center gap-3">
-                  <div>
-                    <BsCalendar2DateFill className="text-2xl" />
-                  </div>
-                  <div className="-TANGGAL- text-sm">29 Noverber 2023</div>
-                </div>
-                <div className="-KETERANGAN- mt-3 p-3 border-[1px] border-[#212121] rounded-md">
-                  Tulis keterangan disini : Lorem ipsum dolor sit amet
-                  consectetur adipisicing elit. At obcaecati assumenda nihil
-                  sequi debitis architecto cum in aliquam sed est, repudiandae
-                  veritatis ab dignissimos quia, corporis maxime corrupti
-                  ducimus, aliquid distinctio. Non, praesentium recusandae
-                  provident corporis dolore atque voluptatibus in?
-                </div>
-              </div>
-            </div>
-
-            <div className="CONTENT bg-white p-3 flex gap-3 max-w-[65em] w-full rounded-md">
-              <div className="-LEFT CONTENT- w-[30em] flex items-center justify-center">
-                <div className="-LOGO CAMPUS text-sm flex flex-col justify-center items-center gap-3">
-                  <Image
-                    src={"/images/logo_kampus.png"}
-                    alt="Logo_kampus"
-                    width={200}
-                    height={200}
-                    className="drop-shadow-xl"
-                  />
-                  <div className="flex gap-3 font-bold">
-                    <div className="">
-                      <div>Nama Kampus</div>
-                      <div>Rektor</div>
+                  <div className="-RIGHT CONTENT- w-full flex flex-col gap-4 bg-[#f1f1f1] p-3 rounded-md">
+                    <div className="-TOP CONTENT- flex gap-3">
+                      <div>
+                        <MdConnectWithoutContact className="text-2xl" />
+                      </div>
+                      <p className="text-base font-bold">{e.hubungan}</p>
                     </div>
-                    <div>
-                      <div> : Universitas Indonesia</div>
-                      <div> : Herman Soeharto</div>
+                    <div className="-BUTTON CONTENT- flex items-center gap-3">
+                      <div>
+                        <BsCalendar2DateFill className="text-2xl" />
+                      </div>
+                      <div className="-TANGGAL- text-sm">{e.date}</div>
+                    </div>
+                    <div className="-KETERANGAN- mt-3 p-3 border-[1px] border-[#212121] rounded-md">
+                      <HTMLContent content={e.value} />
                     </div>
                   </div>
                 </div>
+              ))
+            ) : kerjasama === false ? (
+              <div className="flex flex-col items-center justify-center gap-3">
+                <Loading color="text-yellow-400" />
+                <span className="text-sm">Loading..</span>
               </div>
-              <div className="-RIGHT CONTENT- w-full flex flex-col gap-4 bg-[#f1f1f1] p-3 rounded-md">
-                <div className="-TOP CONTENT- flex gap-3">
-                  <div>
-                    <MdConnectWithoutContact className="text-2xl" />
-                  </div>
-                  <p className="text-sm font-bold">
-                    TULIS HUBUNGAN KERJASAMA DISINI...
-                  </p>
+            ) : (
+              <div className="flex gap-2 text-gray-400">
+                <div>
+                  <FaFileExcel className="text-xl" />
                 </div>
-                <div className="-BUTTON CONTENT- flex items-center gap-3">
-                  <div>
-                    <BsCalendar2DateFill className="text-2xl" />
-                  </div>
-                  <div className="-TANGGAL- text-sm">29 Noverber 2023</div>
-                </div>
-                <div className="-KETERANGAN- mt-3 p-3 border-[1px] border-[#212121] rounded-md">
-                  Tulis keterangan disini : Lorem ipsum dolor sit amet
-                  consectetur adipisicing elit. At obcaecati assumenda nihil
-                  sequi debitis architecto cum in aliquam sed est, repudiandae
-                  veritatis ab dignissimos quia, corporis maxime corrupti
-                  ducimus, aliquid distinctio. Non, praesentium recusandae
-                  provident corporis dolore atque voluptatibus in?
-                </div>
+                <span>Layanan masih kosong</span>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

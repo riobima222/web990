@@ -5,6 +5,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  orderBy,
   query,
   updateDoc,
   where,
@@ -65,11 +66,13 @@ export const adminLogin = async (data: DataLogin) => {
 // LAYANAN
 export const getAllLayanan = async () => {
   try {
-    const snapshot = await getDocs(collection(db, "layanan"));
-    const data = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+  const layananRef = collection(db, "layanan");
+  const q = query(layananRef, orderBy("created_At", "desc"));
+  const snapshot = await getDocs(q);
+  const data = snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
     return data;
   } catch (err) {
     return false;
@@ -121,11 +124,13 @@ export const deleteLayanan = async (idLayanan: string) => {
 // KEGIATAN
 export const getAllKegiatan = async () => {
   try {
-    const snapshot = await getDocs(collection(db, "kegiatan"));
-    const data = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+   const kegiatanRef = collection(db, "kegiatanRef");
+   const q = query(kegiatanRef, orderBy("created_At", "desc"));
+   const snapshot = await getDocs(q);
+   const data = snapshot.docs.map((doc) => ({
+     id: doc.id,
+     ...doc.data(),
+   }));
     return data;
   } catch (err) {
     return false;
@@ -200,11 +205,13 @@ export const updateImageJurnal = async (data: {
 
 export const getAllJurnal = async () => {
   try {
-    const snapshot = await getDocs(collection(db, "jurnal"));
-    const data = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+     const jurnalRef = collection(db, "jurnalRef");
+     const q = query(jurnalRef, orderBy("created_At", "desc"));
+     const snapshot = await getDocs(q);
+     const data = snapshot.docs.map((doc) => ({
+       id: doc.id,
+       ...doc.data(),
+     }));
     return data;
   } catch (err) {
     return false;
@@ -241,5 +248,44 @@ export const getFilterJurnal = async (type: string, value: string) => {
   } catch (err) {
     console.error("Error in getFilterJurnal:", err);
     return [];
+  }
+};
+
+// KERJASAMA
+export const addKerjasama = async (data: any) => {
+  try {
+    const docRef = await addDoc(collection(db, "kerjasama"), data);
+    return docRef.id;
+  } catch (err) {
+    return false;
+  }
+};
+
+export const updateImageKerjasama = async (data: {
+  idKerjasama: string;
+  imageURL: string;
+}) => {
+  try {
+    await updateDoc(doc(db, "kerjasama", data.idKerjasama), {
+      image: data.imageURL,
+    });
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
+export const getAllKerjasama = async () => {
+  try {
+    const kerjasamaRef = collection(db, "kerjasama");
+    const q = query(kerjasamaRef, orderBy("created_At", "desc"));
+    const snapshot = await getDocs(q);
+    const data = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return data;
+  } catch (err) {
+    return false;
   }
 };
