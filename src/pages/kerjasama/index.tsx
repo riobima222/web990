@@ -1,20 +1,22 @@
-import Loading from "@/components/every/loading";
+// import Loading from "@/components/every/loading";
 import Footer from "@/components/footer/footer";
-import TambahLayanan from "@/components/layout/tambahLayanan";
 import ClientNavbar from "@/components/navbar/clientNavbar";
 import { ModalAppearContext } from "@/context/modalAppear";
-import Image from "next/image";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { IoIosAdd } from "react-icons/io";
-import { FaFileExcel } from "react-icons/fa";
 import { FetchTriggerContext } from "@/context/fetchTrigger";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { AlertSuccessContext } from "@/context/alertSuccess";
+import TambahKerjasama from "@/components/layout/tambahKerjasama";
+import Image from "next/image";
+
+// ICONS
+import { MdConnectWithoutContact } from "react-icons/md";
+import { BsCalendar2DateFill } from "react-icons/bs";
 
 const KerjasamaPage = () => {
   const kontakRef = useRef<HTMLDivElement>(null);
-  const [layanan, setLayanan] = useState<any>(false);
+  // const [kerjasama, setKerjasama] = useState<any>(false);
   const { data: session } = useSession();
 
   // CONTEXT
@@ -34,7 +36,7 @@ const KerjasamaPage = () => {
       if (res.ok) {
         const data = await res.json();
         console.log("ini adalah data", data.data);
-        setLayanan(data.data);
+        // setKerjasama(data.data);
       } else {
         console.log(res);
       }
@@ -52,14 +54,14 @@ const KerjasamaPage = () => {
       <ClientNavbar scroll={{ scrollToKontak }} />
       <div className="-HERO- px-0 sm:px-5 mt-5 pt-20">
         <div className="-IMAGE- flex pe-7 pb-7 justify-end items-end h-[13em] md:h-[17em] bg-[url('/images/banner.jpg')]">
-          <h1 className="text-3xl text-white font-bold">Layanan</h1>
+          <h1 className="text-3xl text-white font-bold">Kerjasama</h1>
         </div>
       </div>
 
       <div className="-LAYANAN- px-5">
         <div className="bg-[#f2f2f2] min-h-[20em] mt-8 p-4">
           <h1 className="font-bold text-2xl text-center mb-5 text-yellow-500">
-            Semua Layanan
+            Semua Kerjasama
           </h1>
           <div className="max-w-[65em] mx-auto flex">
             <div
@@ -71,71 +73,109 @@ const KerjasamaPage = () => {
               <div>
                 <IoIosAdd className="text-2xl" />
               </div>
-              <span>Tambahkan layanan</span>
+              <span>Tambahkan Kerjasama</span>
             </div>
           </div>
-          <div className="-CONTENT- max-w-[65em] mb-16 mx-auto py-3 flex flex-wrap gap-5 justify-center items-center">
-            {layanan.length > 0 ? (
-              layanan.map((item: any, index: number) => (
-                <div
-                  key={index}
-                  className="-CARD- w-[20em] min-h-[14em] bg-white p-2 rounded-md flex flex-col items-start gap-4"
-                >
+          <div className="-CONTENT WRAPPER- mt-4 max-w-[65em] min-h-48 mb-16 mx-auto py-3 flex flex-wrap gap-5 justify-center items-center">
+            <div className="CONTENT bg-white p-3 flex gap-3 max-w-[65em] w-full rounded-md">
+              <div className="-LEFT CONTENT- w-[30em] flex items-center justify-center">
+                <div className="-LOGO CAMPUS text-sm flex flex-col justify-center items-center gap-3">
                   <Image
-                    src={item.image}
-                    alt="tes"
-                    width={700}
-                    height={700}
-                    className="w-full h-[160px] object-cover"
+                    src={"/images/logo_kampus.png"}
+                    alt="Logo_kampus"
+                    width={200}
+                    height={200}
+                    className="drop-shadow-xl"
                   />
-                  <div className="flex items-center justify-start px-3 gap-2 bg-[rgba(60,250,215,.2)] rounded-xl">
-                    <div className="w-3 h-3 rounded-full bg-green-400" />
-                    <h4 className="text-sm">Layanan</h4>
-                  </div>
-                  <div>
-                    <h2 className="font-bold underline hover:no-underline hover:cursor-pointer hover:text-blue-400">
-                      <Link href={`/layanan/${item.id}`}>{item.title}</Link>
-                    </h2>
-                    <p className="text-sm text-gray-400">{item.ketSingkat}</p>
-                    <div className="flex items-center justify-start mt-3">
-                      <button
-                        type="button"
-                        className="px-5 py-2 bg-green-400 text-white rounded-md"
-                      >
-                        <Link href={`/layanan/${item.id}`}>Detail</Link>
-                      </button>
+                  <div className="flex gap-3 font-bold">
+                    <div className="">
+                      <div>Nama Kampus</div>
+                      <div>Rektor</div>
+                    </div>
+                    <div>
+                      <div> : Universitas Indonesia</div>
+                      <div> : Herman Soeharto</div>
                     </div>
                   </div>
                 </div>
-              ))
-            ) : layanan.length === 0 ? (
-              <div className="flex gap-2 text-gray-400">
-                <div>
-                  <FaFileExcel className="text-xl" />
-                </div>
-                <span>Layanan masih kosong</span>
               </div>
-            ) : (
-              layanan == false && (
-                <div className="flex flex-col items-center justify-center gap-3">
-                  <Loading color="text-yellow-400" />
-                  <span className="text-sm">Loading..</span>
+              <div className="-RIGHT CONTENT- w-full flex flex-col gap-4 bg-[#f1f1f1] p-3 rounded-md">
+                <div className="-TOP CONTENT- flex gap-3">
+                  <div>
+                    <MdConnectWithoutContact className="text-2xl" />
+                  </div>
+                  <p className="text-sm font-bold">
+                    TULIS HUBUNGAN KERJASAMA DISINI...
+                  </p>
                 </div>
-              )
-            )}
+                <div className="-BUTTON CONTENT- flex items-center gap-3">
+                  <div>
+                    <BsCalendar2DateFill className="text-2xl" />
+                  </div>
+                  <div className="-TANGGAL- text-sm">29 Noverber 2023</div>
+                </div>
+                <div className="-KETERANGAN- mt-3 p-3 border-[1px] border-[#212121] rounded-md">
+                  Tulis keterangan disini : Lorem ipsum dolor sit amet
+                  consectetur adipisicing elit. At obcaecati assumenda nihil
+                  sequi debitis architecto cum in aliquam sed est, repudiandae
+                  veritatis ab dignissimos quia, corporis maxime corrupti
+                  ducimus, aliquid distinctio. Non, praesentium recusandae
+                  provident corporis dolore atque voluptatibus in?
+                </div>
+              </div>
+            </div>
+
+            <div className="CONTENT bg-white p-3 flex gap-3 max-w-[65em] w-full rounded-md">
+              <div className="-LEFT CONTENT- w-[30em] flex items-center justify-center">
+                <div className="-LOGO CAMPUS text-sm flex flex-col justify-center items-center gap-3">
+                  <Image
+                    src={"/images/logo_kampus.png"}
+                    alt="Logo_kampus"
+                    width={200}
+                    height={200}
+                    className="drop-shadow-xl"
+                  />
+                  <div className="flex gap-3 font-bold">
+                    <div className="">
+                      <div>Nama Kampus</div>
+                      <div>Rektor</div>
+                    </div>
+                    <div>
+                      <div> : Universitas Indonesia</div>
+                      <div> : Herman Soeharto</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="-RIGHT CONTENT- w-full flex flex-col gap-4 bg-[#f1f1f1] p-3 rounded-md">
+                <div className="-TOP CONTENT- flex gap-3">
+                  <div>
+                    <MdConnectWithoutContact className="text-2xl" />
+                  </div>
+                  <p className="text-sm font-bold">
+                    TULIS HUBUNGAN KERJASAMA DISINI...
+                  </p>
+                </div>
+                <div className="-BUTTON CONTENT- flex items-center gap-3">
+                  <div>
+                    <BsCalendar2DateFill className="text-2xl" />
+                  </div>
+                  <div className="-TANGGAL- text-sm">29 Noverber 2023</div>
+                </div>
+                <div className="-KETERANGAN- mt-3 p-3 border-[1px] border-[#212121] rounded-md">
+                  Tulis keterangan disini : Lorem ipsum dolor sit amet
+                  consectetur adipisicing elit. At obcaecati assumenda nihil
+                  sequi debitis architecto cum in aliquam sed est, repudiandae
+                  veritatis ab dignissimos quia, corporis maxime corrupti
+                  ducimus, aliquid distinctio. Non, praesentium recusandae
+                  provident corporis dolore atque voluptatibus in?
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        {/* ALERT */}
-        {/* <AlertSuccess
-          className={`${alertS ? "block" : "hidden"}`}
-          message={alertMessage}
-        />
-        <AlertFailed
-          className={`${alertF ? "block" : "hidden"}`}
-          message={alertMessage}
-        /> */}
       </div>
-      {showModal && <TambahLayanan />}
+      {showModal && <TambahKerjasama />}
       <Footer kontakRef={kontakRef} />
     </div>
   );
