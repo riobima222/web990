@@ -60,7 +60,7 @@ const LayananPage = () => {
         </div>
       </div>
 
-      <div className="-LAYANAN- px-5">
+      <div className="-LAYANAN- px-0 md:px-5">
         <div className="bg-[#f2f2f2] min-h-[20em] mt-8 p-4">
           <h1 className="font-bold text-2xl text-center mb-5 text-yellow-500">
             Semua Kegiatan

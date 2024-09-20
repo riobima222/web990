@@ -39,22 +39,6 @@ const ClientNavbar = ({
               Profile
             </Link>
           </li>
-          {/* <div className="dropdown dropdown-bottom">
-            <div tabIndex={0} role="button" className="hover:font-normal">
-              visi & misi
-            </div>
-            <ul
-              tabIndex={0}
-              className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
-            >
-              <li>
-                <a>Item 1</a>
-              </li>
-              <li>
-                <a>Item 2</a>
-              </li>
-            </ul>
-          </div> */}
           <li>
             <Link href="/layanan" className="tracking-wider hover:font-normal">
               Layanan
@@ -183,22 +167,6 @@ const ClientNavbar = ({
           <Link href="/layanan">Layanan</Link>
           <Link href="/kerjasama">Kerjasama</Link>
           <Link href="/kegiatan">Kegiatan</Link>
-          {/* <div className="dropdown dropdown-bottom">
-            <div tabIndex={0} role="button" className="hover:font-normal">
-              visi & misi
-            </div>
-            <ul
-              tabIndex={0}
-              className="dropdown-content menu bg-base-100 rounded-box z-[1] w-44 p-2 shadow text-[#990000]"
-            >
-              <li>
-                <a>Item 1</a>
-              </li>
-              <li>
-                <a>Item 2</a>
-              </li>
-            </ul>
-          </div> */}
           <span
             onClick={() => {
               scroll?.scrollToKontak();
@@ -208,13 +176,6 @@ const ClientNavbar = ({
             Kontak
           </span>
         </div>
-        <button
-          onClick={() => signIn()}
-          type="button"
-          className="absolute w-full bottom-1 text-[#990000] transition duration-200 border-[1px] border-[#990000] font-bold px-3 py-1 rounded-md bg-white focus:border-[#fff] focus:bg-[#990000] focus:text-white"
-        >
-          Login
-        </button>
       </div>
     </div>
   );

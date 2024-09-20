@@ -11,10 +11,6 @@ import { FetchTriggerContext } from "@/context/fetchTrigger";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { AlertSuccessContext } from "@/context/alertSuccess";
-// import { AlertFailedContext } from "@/context/alertFailed";
-// import { AlertMessageContext } from "@/context/alertMessage";
-// import AlertSuccess from "@/components/every/alertSuccess";
-// import AlertFailed from "@/components/every/alertFailed";
 
 const LayananPage = () => {
   const kontakRef = useRef<HTMLDivElement>(null);
@@ -60,7 +56,7 @@ const LayananPage = () => {
         </div>
       </div>
 
-      <div className="-LAYANAN- px-5">
+      <div className="-LAYANAN- md:px-5 px-0">
         <div className="bg-[#f2f2f2] min-h-[20em] mt-8 p-4">
           <h1 className="font-bold text-2xl text-center mb-5 text-yellow-500">
             Semua Layanan

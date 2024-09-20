@@ -61,7 +61,7 @@ const KerjasamaPage = () => {
         </div>
       </div>
 
-      <div className="-LAYANAN- px-5">
+      <div className="-LAYANAN- px-0 md:px-5">
         <div className="bg-[#f2f2f2] min-h-[20em] mt-8 p-4">
           <h1 className="font-bold text-2xl text-center mb-5 text-yellow-500">
             Semua Kerjasama
@@ -84,9 +84,9 @@ const KerjasamaPage = () => {
               kerjasama.map((e: any, i: number) => (
                 <div
                   key={i}
-                  className="CONTENT bg-white p-3 flex gap-3 max-w-[65em] w-full rounded-md"
+                  className="CONTENT bg-white p-3 flex flex-col md:flex-row gap-3 max-w-[65em] w-full rounded-md"
                 >
-                  <div className="-LEFT CONTENT- w-[30em] flex items-center justify-center">
+                  <div className="-LEFT CONTENT- w-full md:w-[30em] flex items-center justify-center">
                     <div className="-LOGO CAMPUS text-sm flex flex-col justify-center items-center gap-3">
                       <Image
                         src={"/images/logo_kampus.png"}
