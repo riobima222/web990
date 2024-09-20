@@ -11,11 +11,15 @@ import { ModalAppearContext } from "@/context/modalAppear";
 import TambahJurnal from "../layout/tambahJurnal";
 import Jurnal from "./jurnal";
 import StatisticView from "./statisticView";
+import { FaCircleArrowDown } from "react-icons/fa6";
+import { DataJurnalContext } from "@/context/dataJurnal";
+import { FaCircleArrowUp } from "react-icons/fa6";
 
 const Main = () => {
   const daftarBuku = useRef<HTMLDivElement>(null);
   const kontakRef = useRef<HTMLDivElement>(null);
   const { showModal, setShowModal }: any = useContext(ModalAppearContext);
+  const { dataJurnal, setDataJurnal }: any = useContext(DataJurnalContext);
   const { data: session } = useSession();
 
   const scrollToDaftarBuku = () => {
@@ -30,6 +34,38 @@ const Main = () => {
     }
   };
 
+  const handleArrowClick = async () => {
+    const res = await fetch("/api/jurnal/getall", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
+    });
+    const data = await res.json();
+    if (res.ok) {
+      setDataJurnal(data.data);
+    } else {
+      console.log(data);
+    }
+  };
+
+  const handleArrowUp = async () => {
+    const res = await fetch("/api/jurnal/get8", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
+    });
+    const data = await res.json();
+    if (res.ok) {
+      setDataJurnal(data.data);
+    } else {
+      console.log(data);
+    }
+  };
+
   return (
     <div>
       <div className="--SECTION 1-- md:h-screen">
@@ -37,7 +73,7 @@ const Main = () => {
         <Hero />
       </div>
 
-      < StatisticView/>
+      <StatisticView />
 
       <div ref={daftarBuku} className="--DAFTAR BUKU-- pb-7 mt-16">
         <h1 className="text-3xl font-bold text-center">Daftar Buku</h1>
@@ -61,8 +97,21 @@ const Main = () => {
             </div>
           </div>
         )}
-        <div className="--BOOK CONTENT--  min-h-[20em] flex justify-center mt-4">
+        <div className="--BOOK CONTENT--  min-h-[20em] flex flex-col justify-center items-center gap-8 mt-4">
           <Jurnal />
+          <div className="hover:cursor-pointer">
+            {dataJurnal.length === 8 ? (
+              <FaCircleArrowDown
+                onClick={handleArrowClick}
+                className="text-[#990000] text-3xl"
+              />
+            ) : (
+              <FaCircleArrowUp
+                onClick={handleArrowUp}
+                className="text-[#990000] text-3xl"
+              />
+            )}
+          </div>
         </div>
       </div>
 

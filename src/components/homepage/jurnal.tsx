@@ -9,11 +9,11 @@ import { FetchTriggerContext } from "@/context/fetchTrigger";
 import { DataJurnalContext } from "@/context/dataJurnal";
 
 const Jurnal = () => {
-  const {dataJurnal, setDataJurnal}: any = useContext(DataJurnalContext)
+  const { dataJurnal, setDataJurnal }: any = useContext(DataJurnalContext);
   const { fetchTrigger }: any = useContext(FetchTriggerContext);
 
   const fetchAllJurnal = async () => {
-    const res = await fetch("/api/jurnal/getall", {
+    const res = await fetch("/api/jurnal/get8", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

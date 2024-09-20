@@ -5,6 +5,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  limit,
   orderBy,
   query,
   updateDoc,
@@ -205,6 +206,21 @@ export const getAllJurnal = async () => {
   try {
     const jurnalRef = collection(db, "jurnal");
     const q = query(jurnalRef, orderBy("created_At", "desc"));
+    const snapshot = await getDocs(q);
+    const data = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return data;
+  } catch (err) {
+    return false;
+  }
+};
+
+export const get10Jurnal = async () => {
+  try {
+    const jurnalRef = collection(db, "jurnal");
+    const q = query(jurnalRef, orderBy("created_At", "desc"), limit(8));
     const snapshot = await getDocs(q);
     const data = snapshot.docs.map((doc) => ({
       id: doc.id,
