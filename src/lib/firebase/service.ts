@@ -66,13 +66,12 @@ export const adminLogin = async (data: DataLogin) => {
 // LAYANAN
 export const getAllLayanan = async () => {
   try {
-  const layananRef = collection(db, "layanan");
-  const q = query(layananRef, orderBy("created_At", "desc"));
-  const snapshot = await getDocs(q);
-  const data = snapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }));
+    const layananRef = collection(db, "layanan");
+    const snapshot = await getDocs(layananRef);
+    const data = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
     return data;
   } catch (err) {
     return false;
@@ -124,13 +123,12 @@ export const deleteLayanan = async (idLayanan: string) => {
 // KEGIATAN
 export const getAllKegiatan = async () => {
   try {
-   const kegiatanRef = collection(db, "kegiatanRef");
-   const q = query(kegiatanRef, orderBy("created_At", "desc"));
-   const snapshot = await getDocs(q);
-   const data = snapshot.docs.map((doc) => ({
-     id: doc.id,
-     ...doc.data(),
-   }));
+    const kegiatanRef = collection(db, "kegiatan");
+    const snapshot = await getDocs(kegiatanRef);
+    const data = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
     return data;
   } catch (err) {
     return false;
@@ -205,13 +203,13 @@ export const updateImageJurnal = async (data: {
 
 export const getAllJurnal = async () => {
   try {
-     const jurnalRef = collection(db, "jurnalRef");
-     const q = query(jurnalRef, orderBy("created_At", "desc"));
-     const snapshot = await getDocs(q);
-     const data = snapshot.docs.map((doc) => ({
-       id: doc.id,
-       ...doc.data(),
-     }));
+    const jurnalRef = collection(db, "jurnal");
+    const q = query(jurnalRef, orderBy("created_At", "desc"));
+    const snapshot = await getDocs(q);
+    const data = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
     return data;
   } catch (err) {
     return false;
