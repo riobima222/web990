@@ -6,14 +6,12 @@ const ImageSlider = () => {
 
   const slides = [
     {
-      image:
-        "https://images.unsplash.com/photo-1544427920-c49ccfb85579?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1422&q=80",
+      image: "/images/banner.jpg",
       title: "Hello world",
       subtitle: "Carousel with Next.js and React",
     },
     {
-      image:
-        "https://images.unsplash.com/photo-1544144433-d50aff500b91?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80",
+      image: "/images/banner.jpg",
       title: "Hello world",
       subtitle: "Carousel with Next.js and React",
     },

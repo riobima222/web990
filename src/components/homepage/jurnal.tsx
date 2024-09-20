@@ -10,7 +10,6 @@ import { DataJurnalContext } from "@/context/dataJurnal";
 
 const Jurnal = () => {
   const {dataJurnal, setDataJurnal}: any = useContext(DataJurnalContext)
-  console.log("Ini semua Jurnal : ", dataJurnal);
   const { fetchTrigger }: any = useContext(FetchTriggerContext);
 
   const fetchAllJurnal = async () => {

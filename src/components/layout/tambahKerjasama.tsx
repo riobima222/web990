@@ -167,6 +167,15 @@ const TambahKerjasama = () => {
             setImageMessage("");
           }, 1000);
         }, 1000);
+      } else if (e.target.files[0].size > 819200) {
+        setImage(null);
+        setImageMessage("size lebih dari 800kb");
+        setTimeout(() => {
+          setLoading(false);
+          setTimeout(() => {
+            setImageMessage("");
+          }, 1000);
+        }, 1000);
       } else {
         setImage(e.target.files[0]);
       }
@@ -217,7 +226,7 @@ const TambahKerjasama = () => {
               htmlFor="image"
               className="text-sm text-gray-700 border-2 text-center p-2 rounded-md w-[9em] hover:cursor-pointer"
             >
-              masukan gambar disini, maximal <strong>1mb</strong> format{" "}
+              masukan gambar disini, maximal <strong>800kb</strong> format{" "}
               <strong>.png</strong>
             </label>
             {image && (

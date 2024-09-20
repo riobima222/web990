@@ -70,7 +70,7 @@ const TambahJurnal = () => {
     const nasional = (form.elements.namedItem("nasional") as HTMLInputElement)
       .value;
 
-    const keywords = generateKeywords(title)
+    const keywords = generateKeywords(title);
 
     const data = {
       title,
@@ -81,7 +81,7 @@ const TambahJurnal = () => {
         internasional === "internasional-indexed" ? false : internasional,
       image: "",
       created_At: Date(),
-      keywords
+      keywords,
     };
     if (session) {
       const res = await fetch("/api/jurnal/add", {
@@ -169,6 +169,15 @@ const TambahJurnal = () => {
             setImageMessage("");
           }, 1000);
         }, 1000);
+      } else if (e.target.files[0].size > 819200) {
+        setImage(null);
+        setImageMessage("size lebih dari 800kb");
+        setTimeout(() => {
+          setLoading(false);
+          setTimeout(() => {
+            setImageMessage("");
+          }, 1000);
+        }, 1000);
       } else {
         setImage(e.target.files[0]);
       }
@@ -244,7 +253,8 @@ const TambahJurnal = () => {
               htmlFor="image"
               className="text-sm text-gray-700 border-2 text-center p-2 rounded-md w-[9em] hover:cursor-pointer"
             >
-              masukan gambar disini, maximal <strong>1mb</strong>
+              masukan gambar disini, maximal <strong>800kb</strong> & format{" "}
+              <strong>.jpg</strong>
             </label>
             {image && (
               <Image

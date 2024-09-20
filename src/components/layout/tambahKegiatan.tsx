@@ -42,6 +42,7 @@ const TambahKegiatan = () => {
   const [value, setValue] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState<File | null>(null);
+  console.log(image);
   const [imageMessage, setImageMessage] = useState<string>("");
   const storage = getStorage(app);
   const { data: session } = useSession() as { data: CustomeSession | null };
@@ -73,7 +74,7 @@ const TambahKegiatan = () => {
       keterangan: value,
       linkvideo,
       image: "",
-      created_At: Date()
+      created_At: Date(),
     };
     if (session) {
       const res = await fetch("/api/kegiatan/addkegiatan", {
@@ -164,6 +165,15 @@ const TambahKegiatan = () => {
             setImageMessage("");
           }, 1000);
         }, 1000);
+      } else if (e.target.files[0].size > 819200) {
+        setImage(null);
+        setImageMessage("size lebih dari 800kb");
+        setTimeout(() => {
+          setLoading(false);
+          setTimeout(() => {
+            setImageMessage("");
+          }, 1000);
+        }, 1000);
       } else {
         setImage(e.target.files[0]);
       }
@@ -207,7 +217,8 @@ const TambahKegiatan = () => {
               htmlFor="image"
               className="text-sm text-gray-700 border-2 text-center p-2 rounded-md w-[9em] hover:cursor-pointer"
             >
-              masukan gambar disini, maximal <strong>1mb</strong>
+              masukan gambar disini, maximal <strong>800kb</strong> & format{" "}
+              <strong>.jpg</strong>
             </label>
             {image && (
               <Image
