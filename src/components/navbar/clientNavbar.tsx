@@ -127,15 +127,6 @@ const ClientNavbar = ({
                 height={40}
                 className="rounded-full"
               />
-              {/* <div
-                className={`absolute bg-gray-300 px-3 py-1 rounded-sm -left-4 flex-justify-center ${
-                  profile ? "block" : "hidden"
-                }`}
-              >
-                <Link href="/dashboard/profile" className="text-sm">
-                  Profile
-                </Link>
-              </div> */}
             </div>
             <button
               onClick={() => signOut()}
