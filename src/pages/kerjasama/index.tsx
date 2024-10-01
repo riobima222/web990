@@ -16,16 +16,21 @@ import { BsCalendar2DateFill } from "react-icons/bs";
 import Loading from "@/components/every/loading";
 import { FaFileExcel } from "react-icons/fa";
 import HTMLContent from "@/components/every/htmlContent";
+import { FaTrash } from "react-icons/fa";
+import { ConfirmDeleteContext } from "@/context/confirmDeleteContext";
+import ConfirmDelete from "@/components/layout/ConfirmDelete";
 
 const KerjasamaPage = () => {
+  const { data: session } = useSession();
   const kontakRef = useRef<HTMLDivElement>(null);
   const [kerjasama, setKerjasama] = useState<any>(false);
-  console.log(kerjasama);
-  const { data: session } = useSession();
+  const [idKerjasama, setIdKerjasama] = useState<string>("");
 
   // CONTEXT
   const { fetchTrigger }: any = useContext(FetchTriggerContext);
   const { showModal, setShowModal }: any = useContext(ModalAppearContext);
+  const { confirmDelete, setConfirmDelete }: any =
+    useContext(ConfirmDeleteContext);
   const { alertS }: any = useContext(AlertSuccessContext);
 
   useEffect(() => {
@@ -45,12 +50,17 @@ const KerjasamaPage = () => {
       }
     };
     fetchLayanan();
-  }, [fetchTrigger, alertS]);
+  }, [fetchTrigger, alertS, showModal]);
 
   const scrollToKontak = () => {
     if (kontakRef.current) {
       kontakRef.current.scrollIntoView({ behavior: "smooth" });
     }
+  };
+
+  const handleDelete = (idKerjasama: string) => {
+    setConfirmDelete(true);
+    setIdKerjasama(idKerjasama);
   };
   return (
     <div className="-PROFILE- overflow-x-hidden">
@@ -80,11 +90,11 @@ const KerjasamaPage = () => {
             </div>
           </div>
           <div className="-CONTENT WRAPPER- mt-4 max-w-[65em] min-h-48 mb-16 mx-auto py-3 flex flex-wrap gap-5 justify-center items-center">
-            {kerjasama ? (
+            {kerjasama.length > 0 ? (
               kerjasama.map((e: any, i: number) => (
                 <div
                   key={i}
-                  className="CONTENT bg-white p-3 flex flex-col md:flex-row gap-3 max-w-[65em] w-full rounded-md"
+                  className="CONTENT bg-white p-3 flex flex-col md:flex-row gap-3 max-w-[65em] w-full rounded-md relative" // Tambahkan relative untuk positioning tombol hapus
                 >
                   <div className="-LEFT CONTENT- w-full md:w-[30em] flex items-center justify-center">
                     <div className="-LOGO CAMPUS text-sm flex flex-col justify-center items-center gap-3">
@@ -107,6 +117,7 @@ const KerjasamaPage = () => {
                       </div>
                     </div>
                   </div>
+
                   <div className="-RIGHT CONTENT- w-full flex flex-col gap-4 bg-[#f1f1f1] p-3 rounded-md">
                     <div className="-TOP CONTENT- flex gap-3">
                       <div>
@@ -124,6 +135,14 @@ const KerjasamaPage = () => {
                       <HTMLContent content={e.value} />
                     </div>
                   </div>
+
+                  {/* Tombol Hapus */}
+                  <button
+                    onClick={() => handleDelete(e.id)} // Tambahkan fungsi untuk menghapus jurnal
+                    className="absolute top-2 right-2 text-red-600 bg-white p-2 rounded-full shadow hover:bg-red-100 transition-colors duration-300 focus:outline-none"
+                  >
+                    <FaTrash className="text-xl" />
+                  </button>
                 </div>
               ))
             ) : kerjasama === false ? (
@@ -136,7 +155,7 @@ const KerjasamaPage = () => {
                 <div>
                   <FaFileExcel className="text-xl" />
                 </div>
-                <span>Layanan masih kosong</span>
+                <span>kerjasama masih kosong</span>
               </div>
             )}
           </div>
@@ -144,6 +163,7 @@ const KerjasamaPage = () => {
       </div>
       {showModal && <TambahKerjasama />}
       <Footer kontakRef={kontakRef} />
+      {confirmDelete && <ConfirmDelete from="kerjasama" id={idKerjasama} />}
     </div>
   );
 };

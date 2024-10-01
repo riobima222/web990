@@ -31,6 +31,7 @@ export interface KegiatanInter {
 }
 
 export interface JurnalInter {
+  id?: string;
   title: string;
   sinta: string;
   linkjurnal: string;

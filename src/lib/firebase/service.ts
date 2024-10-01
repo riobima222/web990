@@ -265,6 +265,15 @@ export const getFilterJurnal = async (type: string, value: string) => {
   }
 };
 
+export const deleteJurnal = async (idJurnal: string) => {
+  try {
+    await deleteDoc(doc(db, "jurnal", idJurnal));
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
 // KERJASAMA
 export const addKerjasama = async (data: any) => {
   try {
@@ -299,6 +308,15 @@ export const getAllKerjasama = async () => {
       ...doc.data(),
     }));
     return data;
+  } catch (err) {
+    return false;
+  }
+};
+
+export const deleteKerjasama = async (idKerjasama: string) => {
+  try {
+    await deleteDoc(doc(db, "kerjasama", idKerjasama));
+    return true;
   } catch (err) {
     return false;
   }

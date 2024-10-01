@@ -2,7 +2,7 @@ import Footer from "@/components/footer/footer";
 import Hero from "@/components/homepage/hero";
 import Navbar from "@/components/navbar/navbar";
 import { useSession } from "next-auth/react";
-import { useContext, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import SearchSection from "./searchSection";
 
 // ICONS
@@ -14,13 +14,38 @@ import StatisticView from "./statisticView";
 import { FaCircleArrowDown } from "react-icons/fa6";
 import { DataJurnalContext } from "@/context/dataJurnal";
 import { FaCircleArrowUp } from "react-icons/fa6";
+import { ConfirmDeleteContext } from "@/context/confirmDeleteContext";
 
 const Main = () => {
   const daftarBuku = useRef<HTMLDivElement>(null);
   const kontakRef = useRef<HTMLDivElement>(null);
+  const { data: session } = useSession();
+
+  // CONTEXT
   const { showModal, setShowModal }: any = useContext(ModalAppearContext);
   const { dataJurnal, setDataJurnal }: any = useContext(DataJurnalContext);
-  const { data: session } = useSession();
+  const { confirmDelete }: any = useContext(ConfirmDeleteContext);
+  const [checkJurnal, setCheckJurnal] = useState([]);
+  console.log("check jurnal: ", checkJurnal);
+
+  useEffect(() => {
+    const fetchAllJurnal = async () => {
+      const res = await fetch("/api/jurnal/getall", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-store",
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setCheckJurnal(data.data);
+      } else {
+        console.log(data);
+      }
+    };
+    fetchAllJurnal();
+  }, [showModal, confirmDelete]);
 
   const scrollToDaftarBuku = () => {
     if (daftarBuku.current) {
@@ -100,17 +125,18 @@ const Main = () => {
         <div className="--BOOK CONTENT--  min-h-[20em] flex flex-col justify-center items-center gap-8 mt-4">
           <Jurnal />
           <div className="hover:cursor-pointer">
-            {dataJurnal.length === 8 ? (
-              <FaCircleArrowDown
-                onClick={handleArrowClick}
-                className="text-[#990000] text-3xl"
-              />
-            ) : (
-              <FaCircleArrowUp
-                onClick={handleArrowUp}
-                className="text-[#990000] text-3xl"
-              />
-            )}
+            {checkJurnal.length > 8 &&
+              (dataJurnal.length === 8 ? (
+                <FaCircleArrowDown
+                  onClick={handleArrowClick}
+                  className="text-[#990000] text-3xl"
+                />
+              ) : (
+                <FaCircleArrowUp
+                  onClick={handleArrowUp}
+                  className="text-[#990000] text-3xl"
+                />
+              ))}
           </div>
         </div>
       </div>

@@ -11,6 +11,7 @@ import AlertSuccessProvider from "@/context/alertSuccess";
 import AlertFailedProvider from "@/context/alertFailed";
 import AlertMessageProvider from "@/context/alertMessage";
 import DataJurnalProvider from "@/context/dataJurnal";
+import ConfirmDeleteProvider from "@/context/confirmDeleteContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -34,13 +35,15 @@ export default function App({
           <AlertFailedProvider>
             <AlertMessageProvider>
               <DataJurnalProvider>
-                <SessionProvider session={session}>
-                  <div
-                    className={`${geistSans.variable} ${geistMono.variable}`}
-                  >
-                    <Component {...pageProps} />
-                  </div>
-                </SessionProvider>
+                <ConfirmDeleteProvider>
+                  <SessionProvider session={session}>
+                    <div
+                      className={`${geistSans.variable} ${geistMono.variable}`}
+                    >
+                      <Component {...pageProps} />
+                    </div>
+                  </SessionProvider>
+                </ConfirmDeleteProvider>
               </DataJurnalProvider>
             </AlertMessageProvider>
           </AlertFailedProvider>

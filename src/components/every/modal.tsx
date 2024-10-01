@@ -1,3 +1,4 @@
+import { ConfirmDeleteContext } from "@/context/confirmDeleteContext";
 import { ModalAppearContext } from "@/context/modalAppear";
 import { useContext, useRef } from "react";
 
@@ -7,10 +8,16 @@ interface Props {
 
 export const Modal = ({ children }: Props) => {
   const divRef = useRef<HTMLDivElement>(null);
-  const { setShowModal } = useContext(ModalAppearContext) as { setShowModal: React.Dispatch<React.SetStateAction<boolean>>;};
+  const { setShowModal } = useContext(ModalAppearContext) as {
+    setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
+  };
+  const { setConfirmDelete }: any = useContext(
+    ConfirmDeleteContext
+  );
   const close = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === divRef.current) {
       setShowModal(false);
+      setConfirmDelete(false);
     }
   };
   return (

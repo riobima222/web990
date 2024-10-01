@@ -6,9 +6,13 @@ import { deleteObject, getStorage, ref } from "firebase/storage";
 import app from "@/lib/firebase/init";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { ConfirmDeleteContext } from "@/context/confirmDeleteContext";
+import { FetchTriggerContext } from "@/context/fetchTrigger";
 
 const ConfirmDelete = ({ from, id }: { from: string; id: string }) => {
   const { setShowModal }: any = useContext(ModalAppearContext);
+  const { setConfirmDelete }: any = useContext(ConfirmDeleteContext);
+  const { setFetchTrigger }: any = useContext(FetchTriggerContext);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { data: session }: any = useSession();
   const storage = getStorage(app);
@@ -50,7 +54,6 @@ const ConfirmDelete = ({ from, id }: { from: string; id: string }) => {
         cache: "no-store",
       });
       if (res.ok) {
-        console.log("berhasil menghapus kegiatan");
         const filePath = `images/kegiatan/${id}/kegiatan-image.jpg`;
         const storageRef = ref(storage, filePath);
         try {
@@ -62,6 +65,54 @@ const ConfirmDelete = ({ from, id }: { from: string; id: string }) => {
           }, 1000);
         } catch (err) {
           console.log("ada yang error kawaw: ", err);
+        }
+      }
+    } else if (from === "jurnal") {
+      const res = await fetch(`/api/jurnal/delete/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.token}` || "",
+        },
+        cache: "no-store",
+      });
+      if (res.ok) {
+        const filePath = `images/jurnal/${id}/jurnal-image.jpg`;
+        const storageRef = ref(storage, filePath);
+        try {
+          await deleteObject(storageRef);
+          setIsLoading(false);
+          setTimeout(() => {
+            setShowModal(false);
+            setConfirmDelete(false);
+            setFetchTrigger((prev: any) => !prev);
+          }, 1000);
+        } catch (err) {
+          console.log("ada yang error kawan: ", err);
+        }
+      }
+    } else if (from === "kerjasama") {
+      const res = await fetch(`/api/kerjasama/delete/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session?.token}` || "",
+        },
+        cache: "no-store",
+      });
+      if (res.ok) {
+        const filePath = `images/kerjasama/${id}/kerjasama-image.png`;
+        const storageRef = ref(storage, filePath);
+        try {
+          await deleteObject(storageRef);
+          setIsLoading(false);
+          setTimeout(() => {
+            setShowModal(false);
+            setConfirmDelete(false);
+            setFetchTrigger((prev: any) => !prev);
+          }, 1000);
+        } catch (err) {
+          console.log("ada yang error kawan: ", err);
         }
       }
     }
@@ -92,7 +143,10 @@ const ConfirmDelete = ({ from, id }: { from: string; id: string }) => {
             <div>
               <button
                 className="btn btn-sm"
-                onClick={() => setShowModal(false)}
+                onClick={() => {
+                  setShowModal(false);
+                  setConfirmDelete(false);
+                }}
               >
                 Deny
               </button>
