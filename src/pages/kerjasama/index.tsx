@@ -137,12 +137,14 @@ const KerjasamaPage = () => {
                   </div>
 
                   {/* Tombol Hapus */}
-                  <button
-                    onClick={() => handleDelete(e.id)} // Tambahkan fungsi untuk menghapus jurnal
-                    className="absolute top-2 right-2 text-red-600 bg-white p-2 rounded-full shadow hover:bg-red-100 transition-colors duration-300 focus:outline-none"
-                  >
-                    <FaTrash className="text-xl" />
-                  </button>
+                  {session && (
+                    <button
+                      onClick={() => handleDelete(e.id)} // Tambahkan fungsi untuk menghapus jurnal
+                      className="absolute top-2 right-2 text-red-600 bg-white p-2 rounded-full shadow hover:bg-red-100 transition-colors duration-300 focus:outline-none"
+                    >
+                      <FaTrash className="text-xl" />
+                    </button>
+                  )}
                 </div>
               ))
             ) : kerjasama === false ? (
